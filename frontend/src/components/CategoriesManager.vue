@@ -18,14 +18,12 @@
     <table v-if="!loading && categories.length > 0" class="categories-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="category in categories" :key="category.id">
-          <td>{{ category.id }}</td>
           <td>{{ category.name }}</td>
           <td class="actions">
             <button @click="openEditModal(category)" class="btn btn-edit">

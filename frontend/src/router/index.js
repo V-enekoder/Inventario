@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ProductsView from "../views/ProductsView.vue";
 import CategoriesView from "../views/CategoriesView.vue";
+import SuppliersView from "../views/SuppliersView.vue";
+import StockMovementsView from "../views/StockMovementsView.vue";
 
 const routes = [
   {
@@ -20,7 +22,16 @@ const routes = [
     name: "categories",
     component: CategoriesView,
   },
-  // ... otras rutas como 'about'
+  {
+    path: "/suppliers", // <-- AÑADE ESTA RUTA
+    name: "suppliers",
+    component: SuppliersView,
+  },
+  {
+    path: "/stock-movements", // <-- AÑADE ESTA RUTA
+    name: "stock-movements",
+    component: StockMovementsView,
+  },
 ];
 
 const router = createRouter({

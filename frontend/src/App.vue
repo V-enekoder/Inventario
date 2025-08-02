@@ -4,7 +4,9 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/products">Productos</router-link>|
-      <router-link to="/categories">Categorías</router-link>
+      <router-link to="/categories">Categorías</router-link>|
+      <router-link to="/suppliers">Proveedores</router-link>|
+      <router-link to="/stock-movements">Movimientos</router-link>
     </nav>
     <router-view />
   </div>
