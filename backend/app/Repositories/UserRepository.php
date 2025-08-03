@@ -17,7 +17,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUsers(): Collection
     {
-        return $this->model->all();
+        return User::with('roles')->get();
+        //return $this->model->all();
     }
 
     public function getById(int $id): User

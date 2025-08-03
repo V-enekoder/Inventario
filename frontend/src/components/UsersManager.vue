@@ -1,51 +1,36 @@
-<!-- src/components/UsersManager.vue -->
+<!-- src/components/UsersManager.vue (Versión Simplificada) -->
 <template>
   <div class="users-container">
     <h1>Administración de Usuarios</h1>
-    <div v-if="loading">Cargando...</div>
-    <div v-if="error">{{ error }}</div>
-    <table v-if="users.length > 0" class="users-table">
+
+    <!-- Indicadores de estado -->
+    <div v-if="loading">Cargando usuarios...</div>
+    <div v-if="error" class="error-message">{{ error }}</div>
+
+    <!-- Tabla de Usuarios Simplificada -->
+    <table v-if="!loading && users.length > 0" class="users-table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Nombre</th>
           <th>Email</th>
-          <th>Roles</th>
-          <th>Acciones de Admin</th>
+          <!-- Eliminamos las columnas de Roles y Acciones de Admin -->
         </tr>
       </thead>
       <tbody>
+        <!-- Iteramos sobre los usuarios y mostramos solo los datos que tenemos -->
         <tr v-for="user in users" :key="user.id">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>
-            <span v-for="role in user.roles" :key="role.id" class="role-badge">
-              {{ role.name }}
-            </span>
-            <span v-if="!user.roles.length" class="role-badge-none"
-              >Sin rol</span
-            >
-          </td>
-          <td>
-            <button
-              v-if="!isUserAdmin(user)"
-              @click="assignRole(user.id)"
-              class="btn btn-assign"
-            >
-              Asignar Admin
-            </button>
-            <button
-              v-if="isUserAdmin(user)"
-              @click="revokeRole(user.id)"
-              class="btn btn-revoke"
-            >
-              Revocar Admin
-            </button>
-          </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Mensaje si no hay usuarios -->
+    <p v-if="!loading && users.length === 0 && !error">
+      No se han encontrado usuarios.
+    </p>
   </div>
 </template>
 
@@ -59,43 +44,28 @@ const error = ref(null);
 
 const fetchUsers = async () => {
   loading.value = true;
+  error.value = null; // Resetea el error en cada intento
   try {
     const response = await apiClient.get("/users");
-    // Tu API devuelve un array directamente en este caso
-    users.value = response.data;
+    // La API devuelve { "data": [...] }, así que accedemos a response.data.data
+    users.value = response.data.data || [];
   } catch (e) {
-    error.value = "Error al cargar los usuarios.";
+    console.error("Error fetching users:", e);
+    error.value = "Error al cargar los usuarios. Revisa la consola.";
   } finally {
     loading.value = false;
   }
 };
 
-const isUserAdmin = (user) => {
-  return user.roles.some((role) => role.name === "admin");
-};
-
-const assignRole = async (userId) => {
-  try {
-    await apiClient.put(`/users/${userId}/assign-admin-role`);
-    await fetchUsers(); // Recargar la lista para ver el cambio
-  } catch (e) {
-    alert("Error al asignar el rol.");
-  }
-};
-
-const revokeRole = async (userId) => {
-  try {
-    await apiClient.put(`/users/${userId}/revoke-admin-role`);
-    await fetchUsers(); // Recargar la lista
-  } catch (e) {
-    alert("Error al revocar el rol.");
-  }
-};
-
+// Se ejecuta cuando el componente se monta en la página
 onMounted(fetchUsers);
+
+// --- HEMOS ELIMINADO LAS FUNCIONES RELACIONADAS A ROLES ---
+// Ya no necesitamos isUserAdmin, assignRole, ni revokeRole.
 </script>
 
 <style scoped>
+/* Los estilos pueden permanecer igual, son genéricos para la tabla */
 .users-container {
   max-width: 1000px;
   margin: auto;
@@ -110,38 +80,14 @@ onMounted(fetchUsers);
 .users-table td {
   border: 1px solid #ddd;
   padding: 12px;
+  text-align: left;
 }
 .users-table th {
   background-color: #f4f4f4;
+  font-weight: bold;
 }
-.role-badge {
-  background-color: var(--color-blue);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8em;
-}
-.role-badge-none {
-  background-color: #ccc;
-  color: #333; /* ... */
-}
-.btn {
-  /* estilos comunes de botón */
-}
-.btn-assign {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.btn-revoke {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 4px;
+.error-message {
+  color: red;
+  margin-top: 15px;
 }
 </style>

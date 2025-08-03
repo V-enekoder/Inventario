@@ -63,8 +63,6 @@ class UserController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             };
 
-            // Tu respuesta original era diferente, la estandarizo un poco.
-            // Si tu UserResource ya envuelve en "data", esto es correcto.
             return UserResource::collection($users);
         } catch (Exception $exception) {
             return response()->json([
