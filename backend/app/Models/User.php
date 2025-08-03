@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\User
+ *
+ * (Aquí pueden haber otras líneas @property, etc.)
+ *
+ * @method bool isAdmin() // <-- ¡AÑADE ESTA LÍNEA!
+ * @method bool hasRole(string $role) // Esta es la que añadimos antes
+ */
 class User extends Authenticatable
 {
     use HasFactory;
@@ -88,4 +97,16 @@ class User extends Authenticatable
         $this->roles()->detach($adminRoleId);
     }
 
+    public function isAdmin(): bool
+    {
+        // El ID del rol de administrador, asumimos que es 1.
+        $adminRoleId = 1;
+
+        // Consulta directa a la tabla pivote 'role_user'.
+        // El método `exists()` devuelve true si encuentra al menos una fila, false si no.
+        return DB::table('role_user')
+            ->where('user_id', $this->id)
+            ->where('role_id', $adminRoleId)
+            ->exists();
+    }
 }

@@ -102,7 +102,7 @@ class StockMovementController extends Controller
         }
     }
 
-    public function delete($id): JsonResponse
+    public function destroy($id): JsonResponse
     {
         try {
 
@@ -119,5 +119,4 @@ class StockMovementController extends Controller
             return response()->json(['Message' => 'An unexpected error occurred. ' . $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }

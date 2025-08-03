@@ -10,6 +10,7 @@ use App\Http\Controllers\{
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
+    Route::post('/login', [UserController::class, 'login']);
     Route::post('/', [UserController::class, 'store']);
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{user}', [UserController::class, 'show']);

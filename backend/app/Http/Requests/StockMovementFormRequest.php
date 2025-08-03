@@ -28,7 +28,7 @@ class StockMovementFormRequest extends FormRequest
             'product_id' => ['required', 'integer', 'exists:products,id'],
             'quantity'   => ['required', 'integer'],
             'type'       => ['required', 'string', 'max:50'],
-            'date'       => ['required', 'date_format:d-m-Y'],
+            'date'       => ['required', 'date'],
             'note'       => ['nullable', 'string', 'max:255'],
         ];
 

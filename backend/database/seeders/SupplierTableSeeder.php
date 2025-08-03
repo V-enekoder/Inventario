@@ -14,100 +14,99 @@ class SupplierTableSeeder extends Seeder
     {
 
         Supplier::create([
-            'name'    => 'Fornecedor A',
-            'contact' => 'Allison Luis',
+            'name'    => 'Proveedor A',
+            'contact' => 'Andrés López',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorA@example.com',
-            'address' => 'Rua Olinto, 112',
+            'email'   => 'proveedorA@example.com',
+            'address' => 'Calle Olinto, 112',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor B',
-            'contact' => 'José Carlos',
+            'name'    => 'Proveedor B',
+            'contact' => 'José Carlos Martínez',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorB@example.com',
-            'address' => 'José Machado, 845',
+            'email'   => 'proveedorB@example.com',
+            'address' => 'Calle José Machado, 845',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor Q',
-            'contact' => 'Marcos Silva',
+            'name'    => 'Proveedor Q',
+            'contact' => 'Marcos Pérez',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorQ@example.com',
-            'address' => 'Praça Modelo, 789',
+            'email'   => 'proveedorQ@example.com',
+            'address' => 'Plaza Modelo, 789',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor R',
-            'contact' => 'Amanda Oliveira',
+            'name'    => 'Proveedor R',
+            'contact' => 'Amanda García',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorR@example.com',
-            'address' => 'Rua Principal, 123',
+            'email'   => 'proveedorR@example.com',
+            'address' => 'Calle Principal, 123',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor S',
+            'name'    => 'Proveedor S',
             'contact' => 'Josué Santos',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorS@example.com',
-            'address' => 'Avenida Secundária, 456',
+            'email'   => 'proveedorS@example.com',
+            'address' => 'Avenida Secundaria, 456',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor T',
-            'contact' => 'Carolina Silva',
+            'name'    => 'Proveedor T',
+            'contact' => 'Carolina Ruiz',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorT@example.com',
-            'address' => 'Praça Central, 789',
+            'email'   => 'proveedorT@example.com',
+            'address' => 'Plaza Central, 789',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor U',
-            'contact' => 'Raphael Oliveira',
+            'name'    => 'Proveedor U',
+            'contact' => 'Rafael Ortiz',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorU@example.com',
-            'address' => 'Rua Central, 123',
+            'email'   => 'proveedorU@example.com',
+            'address' => 'Calle Central, 123',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor V',
-            'contact' => 'Vanessa Santos',
+            'name'    => 'Proveedor V',
+            'contact' => 'Vanesa Santos',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorV@example.com',
+            'email'   => 'proveedorV@example.com',
             'address' => 'Avenida Principal, 456',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor W',
-            'contact' => 'Gabriel Silva',
+            'name'    => 'Proveedor W',
+            'contact' => 'Gabriel Moreno',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorW@example.com',
-            'address' => 'Praça Secundária, 789',
+            'email'   => 'proveedorW@example.com',
+            'address' => 'Plaza Secundaria, 789',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor X',
-            'contact' => 'Larissa Oliveira',
+            'name'    => 'Proveedor X',
+            'contact' => 'Laura Ortiz',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorX@example.com',
-            'address' => 'Rua Modelo, 123',
+            'email'   => 'proveedorX@example.com',
+            'address' => 'Calle Modelo, 123',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor Y',
+            'name'    => 'Proveedor Y',
             'contact' => 'Diego Santos',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorY@example.com',
-            'address' => 'Avenida Teste, 456',
+            'email'   => 'proveedorY@example.com',
+            'address' => 'Avenida de la Prueba, 456',
         ]);
 
         Supplier::create([
-            'name'    => 'Fornecedor Z',
-            'contact' => 'Juliana Silva',
+            'name'    => 'Proveedor Z',
+            'contact' => 'Juliana Gómez',
             'phone'   => '(XX) XXXX-XXXX',
-            'email'   => 'fornecedorZ@example.com',
-            'address' => 'Praça Exemplo, 789',
+            'email'   => 'proveedorZ@example.com',
+            'address' => 'Plaza del Ejemplo, 789',
         ]);
-
     }
 }

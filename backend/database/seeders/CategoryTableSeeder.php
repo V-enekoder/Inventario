@@ -13,19 +13,19 @@ class CategoryTableSeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'name' => 'Telemedicina',
+            'name' => 'Arte',
         ]);
 
         Category::create([
-            'name' => 'Equipamentos Médicos',
+            'name' => 'Informatica',
         ]);
 
         Category::create([
-            'name' => 'Exames',
+            'name' => 'Material',
         ]);
 
         Category::create([
-            'name' => 'Laudos',
+            'name' => 'Maqueta',
         ]);
     }
 }

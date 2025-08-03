@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Contracts\UserRepositoryInterface;
 use App\Http\Requests\UserFormRequest;
 use App\Http\Resources\UserResource;
-use App\Models\{User};
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\{Auth, DB};
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -21,17 +22,38 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function login(Request $request) // <-- Ahora el type-hint es correcto
     {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        // Verifica se o usuário autenticado é admin
-        if (Auth::user()->role !== 'admin') {
-            return response()->json([
-                'error'   => 'Unauthorized',
-                'message' => 'You do not have permission to access this resource.',
-            ], Response::HTTP_FORBIDDEN);
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Credenciales incorrectas.'], 401);
         }
 
+        /** @var \App\Models\User $user */ // <-- 2. LA SOLUCIÓN MÁGICA
+        $user = Auth::user();
+
+        // Ahora Intelephense sabe que $user es de tipo App\Models\User y encontrará el método.
+        $isAdmin = $user->isAdmin();
+
+        $roles = $isAdmin ? ['admin'] : ['usuario'];
+
+        // He quitado el token '123' y he vuelto a poner el token real.
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Login successful',
+            'user' => new UserResource($user),
+            'roles' => $roles,
+            'token' => $token,
+        ], Response::HTTP_OK);
+    }
+
+    public function index()
+    {
         try {
             $users = $this->userRepository->getUsers();
 
@@ -41,7 +63,9 @@ class UserController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             };
 
-            return response()->json(UserResource::collection($users), Response::HTTP_OK);
+            // Tu respuesta original era diferente, la estandarizo un poco.
+            // Si tu UserResource ya envuelve en "data", esto es correcto.
+            return UserResource::collection($users);
         } catch (Exception $exception) {
             return response()->json([
                 'error'   => 'Unable to fetch users',
@@ -93,9 +117,9 @@ class UserController extends Controller
                 'user'  => new UserResource($user),
                 'token' => $token,
             ], Response::HTTP_CREATED);
-
         } catch (ValidationException $exception) {
-            return response()->json(['error' => 'Unable to store user',
+            return response()->json([
+                'error' => 'Unable to store user',
                 'message'                    => $exception->getMessage(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $exception) {
@@ -124,7 +148,8 @@ class UserController extends Controller
                 'message' => 'The requested user does not exist.',
             ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $exception) {
-            return response()->json(['error' => 'Unable to update user',
+            return response()->json([
+                'error' => 'Unable to update user',
                 'message'                    => $exception->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -141,14 +166,14 @@ class UserController extends Controller
             }
 
             return response()->json(new UserResource($user), Response::HTTP_OK);
-
         } catch (ModelNotFoundException $exception) {
             return response()->json([
                 'error'   => 'User not found',
                 'message' => 'The requested user does not exist.',
             ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $exception) {
-            return response()->json(['error' => 'Unable to delete user',
+            return response()->json([
+                'error' => 'Unable to delete user',
                 'message'                    => $exception->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

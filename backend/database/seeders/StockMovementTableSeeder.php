@@ -13,36 +13,48 @@ class StockMovementTableSeeder extends Seeder
      */
     public function run(): void
     {
-        StockMovement::create([
-            'product_id' => DB::table('products')->where('name', 'Oxímetro de Pulso')->value('id'),
-            'quantity'   => 5,
-            'type'       => 'entrada',
-            'date'       => now(),
-            'note'       => 'Recebimento de novo estoque.',
-        ]);
+        // NOTA: Este seeder asigna un product_id aleatorio entre 1 y 5.
+        // Asegúrate de tener al menos 5 productos en tu tabla 'products'
+        // antes de ejecutar este seeder para evitar errores de clave foránea.
 
         StockMovement::create([
-            'product_id' => DB::table('products')->where('name', 'Bisturi Elétrico')->value('id'),
-            'quantity'   => 3,
-            'type'       => 'saida',
-            'date'       => now(),
-            'note'       => 'Venda para cliente X.',
-        ]);
-
-        StockMovement::create([
-            'product_id' => DB::table('products')->where('name', 'Plataforma de Consultas Online')->value('id'),
+            'product_id' => rand(1, 5), // Asigna un producto aleatorio con ID entre 1 y 5
             'quantity'   => 10,
             'type'       => 'entrada',
             'date'       => now(),
-            'note'       => 'Recebimento de novo estoque.',
+            'note'       => 'Recepción de pedido inicial del proveedor A.',
         ]);
 
         StockMovement::create([
-            'product_id' => DB::table('products')->where('name', 'Hemograma Completo')->value('id'),
-            'quantity'   => 20,
-            'type'       => 'saida',
+            'product_id' => rand(1, 5),
+            'quantity'   => 3,
+            'type'       => 'salida', // 'saida' en portugués es 'salida' en español
             'date'       => now(),
-            'note'       => 'Exames realizados para o hospital Y.',
+            'note'       => 'Venta realizada para el cliente X.',
+        ]);
+
+        StockMovement::create([
+            'product_id' => rand(1, 5),
+            'quantity'   => 25,
+            'type'       => 'entrada',
+            'date'       => now(),
+            'note'       => 'Entrada de nuevo inventario.',
+        ]);
+
+        StockMovement::create([
+            'product_id' => rand(1, 5),
+            'quantity'   => 5,
+            'type'       => 'salida',
+            'date'       => now(),
+            'note'       => 'Envío para la sucursal del centro.',
+        ]);
+
+        StockMovement::create([
+            'product_id' => rand(1, 5),
+            'quantity'   => 2,
+            'type'       => 'ajuste', // Un tipo de movimiento adicional como ejemplo
+            'date'       => now(),
+            'note'       => 'Ajuste de inventario por producto dañado.',
         ]);
     }
 }

@@ -167,20 +167,57 @@ const fetchProducts = async () => {
 
 // --- FUNCIONES CRUD ---
 const handleSubmit = async () => {
-  const payload = { ...movementForm.value };
-  delete payload.id; // No enviamos el ID en el cuerpo del request
+  // 1. Verificación de datos obligatorios antes de continuar.
+  if (!movementForm.value.product_id) {
+    alert("Por favor, selecciona un producto.");
+    return;
+  }
 
+  // 2. Construcción del payload para la API.
+  // Nos aseguramos de que los nombres de las claves coincidan con lo que espera el backend.
+  const payload = {
+    product_id: movementForm.value.product_id,
+    type: movementForm.value.movement_type,
+    quantity: parseInt(movementForm.value.quantity) || 1, // Aseguramos que sea un número
+    note: movementForm.value.note || "", // Aseguramos que sea una cadena
+
+    // 3. Lógica de fecha unificada y correcta.
+    // Para CREAR: genera la fecha de hoy en 'YYYY-MM-DD'.
+    // Para EDITAR: usa la fecha que ya está en el formulario, que debe venir de la API en formato 'YYYY-MM-DD'.
+    date: isEditing.value
+      ? movementForm.value.date
+      : new Date().toISOString().slice(0, 10),
+  };
+
+  // 4. Llamada a la API (PUT para editar, POST para crear).
   try {
     if (isEditing.value) {
+      // Editar
       await apiClient.put(`/stock-movements/${movementForm.value.id}`, payload);
     } else {
+      // Crear
       await apiClient.post("/stock-movements", payload);
     }
+
+    // 5. Si todo va bien, cerramos el modal y recargamos la lista.
     closeModal();
     await fetchStockMovements();
   } catch (e) {
+    // 6. Manejo de errores detallado.
     console.error("Error al guardar el movimiento:", e);
-    alert("Error al guardar el movimiento. Verifique los datos.");
+
+    // Intenta extraer y mostrar los errores de validación de Laravel (error 422).
+    const validationErrors = e.response?.data?.errors;
+    if (validationErrors) {
+      const errorMessages = Object.values(validationErrors).flat().join("\n");
+      alert(`Error de validación:\n${errorMessages}`);
+    } else {
+      // Si es otro tipo de error, muestra un mensaje genérico o el de la API.
+      alert(
+        e.response?.data?.Message ||
+          "Error al guardar el movimiento. Verifique los datos."
+      );
+    }
   }
 };
 
@@ -195,33 +232,38 @@ const handleDelete = async (id) => {
       await fetchStockMovements();
     } catch (e) {
       console.error("Error al eliminar el movimiento:", e);
-      alert("Error al eliminar el movimiento.");
+      alert(e.response?.data?.Message || "Error al eliminar el movimiento.");
     }
   }
 };
 
 // --- FUNCIONES DEL MODAL ---
+
 const openCreateModal = () => {
   isEditing.value = false;
+  // Reseteamos el formulario a sus valores por defecto para la creación.
   movementForm.value = {
     id: null,
     product_id: null,
     quantity: 1,
     movement_type: "entrada",
     note: "",
+    date: null, // El campo de fecha se inicializa como nulo
   };
   showModal.value = true;
 };
 
 const openEditModal = (movement) => {
   isEditing.value = true;
-  // Mapeamos los datos del movimiento al formulario
+  // Rellenamos el formulario con los datos del movimiento seleccionado.
+  // Es crucial que 'movement.movement_date' venga de la API en formato 'YYYY-MM-DD'.
   movementForm.value = {
     id: movement.id,
-    product_id: movement.product.id, // Obtenemos el ID del objeto anidado
+    product_id: movement.product.id,
     quantity: movement.quantity,
-    movement_type: movement["movement type"], // Usamos corchetes por el espacio
+    movement_type: movement["movement type"],
     note: movement.note,
+    date: movement.movement_date, // Asignamos la fecha que viene del objeto 'movement'
   };
   showModal.value = true;
 };

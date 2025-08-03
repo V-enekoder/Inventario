@@ -39,7 +39,7 @@ class StockMovementResource extends JsonResource
             }),
             'quantity'      => $this->quantity,
             'movement type' => $this->type,
-            'movement_date' => $this->date->format('d-m-Y'),
+            'movement_date' => $this->date->format('Y-m-d'),
             'note'          => $this->note,
         ];
     }

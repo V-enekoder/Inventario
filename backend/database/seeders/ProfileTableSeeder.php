@@ -14,12 +14,12 @@ class ProfileTableSeeder extends Seeder
     {
         DB::table('profiles')->insert([
             'name'        => 'Manager',
-            'description' => 'Manager profile with full access.',
+            'description' => 'Manager',
         ]);
 
         DB::table('profiles')->insert([
             'name'        => 'Employee',
-            'description' => 'Employee profile with limited access.',
+            'description' => 'Employee',
         ]);
     }
 }
